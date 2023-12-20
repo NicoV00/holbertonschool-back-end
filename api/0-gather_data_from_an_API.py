@@ -1,27 +1,21 @@
 #!/usr/bin/python3
-""" Task 0 """
-
+"""Task 0"""
 
 import requests
-import sys
+from sys import argv
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    api_url = f"https://jsonplaceholder.typicode.com/"
 
-    if len(sys.argv) != 2:
-        print("Enter a valid number")
-        sys.exit()
+    user_id = int(argv[1])
+    user_data = requests.get(api_url + f"users/{user_id}").json()
+    user_tasks = requests.get(api_url + f"users/{user_id}/todos").json()
 
-    emp_id = sys.argv[1]
+    comp_tasks = [t for t in user_tasks if t["completed"]]
 
-    user_tasks = requests.get(
-        f'https://jsonplaceholder.typicode.com/users/{emp_id}/todos').json()
-    user_info = requests.get(
-        f'https://jsonplaceholder.typicode.com/users/{emp_id}').json()
+    print(f"Employee {user_data['name']} is done with ", end="")
+    print(f"tasks({len(comp_tasks)}/{len(user_tasks)}):")
 
-    user_name = user_info.get('name')
-    completed_tasks = [todo for todo in user_tasks if todo['completed']]
-    print(f"Employee {user_name} is done with"
-          f" tasks({len(completed_tasks)}/{len(user_tasks)}):")
-    for task in completed_tasks:
-        print(f"\t {task.get('title')}")
+    for task in comp_tasks:
+        print("\t " + task["title"])
