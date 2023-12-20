@@ -19,17 +19,17 @@ if __name__ == '__main__':
         print("Enter a valid number")
         sys.exit()
 
-    UserId = sys.argv[1]
+    UserID = sys.argv[1]
 
     userTasks = requests.get(
-        f'https://jsonplaceholder.typicode.com/users/{UserId}/todos').json()
+        f'https://jsonplaceholder.typicode.com/users/{UserID}/todos').json()
     userInfo = requests.get(
-        f'https://jsonplaceholder.typicode.com/users/{UserId}').json()
+        f'https://jsonplaceholder.typicode.com/users/{UserID}').json()
 
     userName = userInfo.get('username')
     rows = []
     for task in userTasks:
-        row = [UserId, userName, task.get('completed'), task.get('title')]
+        row = [UserID, userName, task.get('completed'), task.get('title')]
         rows.append(row)
 
-    write_file(f"{UserId}.csv", rows)
+    write_file(f"{UserID}.csv", rows)
